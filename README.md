@@ -152,6 +152,7 @@ Nên dùng ảnh chụp màn hình do chính bạn chụp trong game, tránh l�
 | Server hiện tại | Có | Chỉ nhận chữ số |
 | Cấp độ nhà | Có | Danh sách cấp 25–30 và I1–I10. Sửa mảng `LEVELS` trong `index.html` để đổi danh sách. |
 | Lực chiến xe 1 | Có | Tự chèn dấu chấm ngăn cách hàng nghìn |
+| Lực chiến di cư | Có | Tự chèn dấu chấm ngăn cách hàng nghìn, xem trong danh sách Black Gold Battlefield (BGB) |
 | Kênh liên hệ | Có | Zalo / Discord / WeChat / QQ / Facebook / Telegram / Khác |
 | Thông tin liên hệ | Có | Số điện thoại, tag hoặc link |
 | Ghi chú | Không | Tối đa 500 ký tự |
