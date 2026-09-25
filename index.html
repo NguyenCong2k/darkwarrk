@@ -6,6 +6,7 @@
 <title>Server 134 — Tuyển Quân Di Cư | Dark War: Survival</title>
 <meta name="description" id="metaDesc" content="Đăng ký migration về Server 134 — Dark War: Survival. Điền thông tin trong 60 giây, ban quản trị sẽ liên hệ hỗ trợ toàn bộ quá trình chuyển server.">
 <meta name="theme-color" content="#0b0c0e">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0b0d'/%3E%3Cpath d='M16 4 L26 9 V18 C26 24 16 28 16 28 C16 28 6 24 6 18 V9 Z' fill='none' stroke='%23ff8a1f' stroke-width='2.2' stroke-linejoin='round'/%3E%3Ctext x='16' y='20' font-family='sans-serif' font-size='10' font-weight='900' fill='%23ffb454' text-anchor='middle'%3E134%3C/text%3E%3C/svg%3E">
 
 <!-- Open Graph: hiển thị đẹp khi dán link vào Zalo / Discord / Facebook / WeChat -->
 <meta property="og:type" content="website">
@@ -89,6 +90,7 @@ body::after{
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23n)'/></svg>");
   mix-blend-mode:overlay;
 }
+@media(max-width:768px){body::after{display:none}}
 
 /* ===================== THANH ĐIỀU HƯỚNG ===================== */
 .nav{
@@ -640,6 +642,13 @@ footer{border-top:1px solid var(--line);background:var(--bg-2);padding:40px 0 34
           </div>
 
           <div class="field">
+            <label for="migrationPower"><span data-i18n="f.mpw">Lực chiến di cư</span><span class="req">*</span></label>
+            <input type="text" id="migrationPower" name="migrationPower" inputmode="numeric" data-i18n-ph="f.mpw.ph" placeholder="VD: 85.000.000" autocomplete="off" required>
+            <span class="hint" data-i18n="f.mpw.hint">Xem lực chiến trong danh sách Black Gold Battlefield (BGB).</span>
+            <span class="err" data-i18n="f.mpw.err">Nhập lực chiến di cư của bạn.</span>
+          </div>
+
+          <div class="field">
             <label for="contactType"><span data-i18n="f.ct">Kênh liên hệ</span><span class="req">*</span></label>
             <select id="contactType" name="contactType" required>
               <option value="Zalo">Zalo</option>
@@ -652,13 +661,13 @@ footer{border-top:1px solid var(--line);background:var(--bg-2);padding:40px 0 34
             </select>
             <span class="hint" data-i18n="f.ct.hint">Chọn kênh bạn hay dùng nhất.</span>
           </div>
-        </div>
 
-        <div class="field">
-          <label for="contact"><span data-i18n="f.cv">Thông tin liên hệ</span><span class="req">*</span></label>
-          <input type="text" id="contact" name="contact" data-i18n-ph="f.cv.ph" placeholder="Số Zalo, Discord tag hoặc link Facebook" autocomplete="off" required>
-          <span class="hint" data-i18n="f.cv.hint">Ban quản trị sẽ nhắn cho bạn qua đây trong vòng 24 giờ.</span>
-          <span class="err" data-i18n="f.cv.err">Nhập thông tin liên hệ để chúng tôi phản hồi.</span>
+          <div class="field">
+            <label for="contact"><span data-i18n="f.cv">Thông tin liên hệ</span><span class="req">*</span></label>
+            <input type="text" id="contact" name="contact" data-i18n-ph="f.cv.ph" placeholder="Số Zalo, Discord tag hoặc link Facebook" autocomplete="off" required>
+            <span class="hint" data-i18n="f.cv.hint">Ban quản trị sẽ nhắn cho bạn qua đây trong vòng 24 giờ.</span>
+            <span class="err" data-i18n="f.cv.err">Nhập thông tin liên hệ để chúng tôi phản hồi.</span>
+          </div>
         </div>
 
         <div class="field">
@@ -690,6 +699,7 @@ footer{border-top:1px solid var(--line);background:var(--bg-2);padding:40px 0 34
         <p style="font-size:14px" data-i18n="ok.keep">Giữ lại mã đơn này để tiện tra cứu khi nhắn tin.</p>
         <div style="margin-top:26px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
           <button class="btn btn-ghost" id="copyBtn" type="button" data-i18n="ok.copy">Sao chép nội dung đơn</button>
+          <button class="btn btn-ghost" id="anotherBtn" type="button" data-i18n="ok.another">Gửi đơn khác</button>
           <!-- Điền CONTACT_LINK trong phần script là nút này tự hiện -->
           <a class="btn" id="joinLink" href="#" hidden data-i18n="ok.join">Vào nhóm liên hệ</a>
         </div>
@@ -752,7 +762,7 @@ footer{border-top:1px solid var(--line);background:var(--bg-2);padding:40px 0 34
    Xem hướng dẫn lấy URL trong file README.md.
    Để trống thì form vẫn chạy nhưng chỉ lưu tạm trên máy người dùng.
    ============================================================ */
-const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbwhokSY3_432k1lvBbrIhOFBmyO3RwR-3XJp9Kd6IqKWqdrmw7q9untTIy0uNDXLMxs/exec";
+const SHEET_ENDPOINT ="https://script.google.com/macros/s/AKfycbwhokSY3_432k1lvBbrIhOFBmyO3RwR-3XJp9Kd6IqKWqdrmw7q9untTIy0uNDXLMxs/exec";
 
 /* Link nhóm liên hệ (tuỳ chọn). Điền vào rồi nút "Vào nhóm liên hệ" tự hiện. */
 const CONTACT_LINK = "";
@@ -790,7 +800,7 @@ const I18N = {
 
     "pro.tag":"Quy trình","pro.h2":"Bốn bước là xong",
     "pro.p":"Bạn chỉ cần làm bước 1. Ba bước còn lại có người hướng dẫn theo từng tin nhắn.",
-    "s1.h":"Gửi đơn","s1.p":"Điền ID game, tên nhân vật, server hiện tại, cấp nhà và lực chiến xe 1. Mất khoảng một phút.",
+    "s1.h":"Gửi đơn","s1.p":"Điền ID game, tên nhân vật, server hiện tại, cấp nhà, lực chiến xe 1 và lực chiến di cư. Mất khoảng một phút.",
     "s2.h":"Duyệt hồ sơ","s2.p":"Ban quản trị kiểm tra mốc chỉ số và slot còn trống, phản hồi trong vòng 24 giờ.",
     "s3.h":"Chuẩn bị di chuyển","s3.p":"Hướng dẫn chuẩn bị vật phẩm chuyển server, canh thời điểm cổng mở và mốc điều kiện cần đạt.",
     "s4.h":"Nhận căn cứ","s4.p":"Sang tới nơi có người dẫn vào liên minh, chọn toạ độ, nhận gói tiếp tế và bắt đầu cày.",
@@ -805,6 +815,7 @@ const I18N = {
     "f.lv":"Cấp độ nhà","f.lv.hint":"Cấp của toà nhà chính (Shelter / Tower).","f.lv.err":"Chọn cấp nhà của bạn.",
     "f.lv.ph":"— Chọn cấp nhà chính —","f.lv.n":"Cấp {n}",
     "f.pw":"Lực chiến xe 1","f.pw.ph":"VD: 12.500.000","f.pw.hint":"Tổng lực chiến của đội xe số 1. Gõ số, dấu chấm tự thêm.","f.pw.err":"Nhập lực chiến xe 1.",
+    "f.mpw":"Lực chiến di cư","f.mpw.ph":"VD: 85.000.000","f.mpw.hint":"Xem lực chiến trong danh sách Black Gold Battlefield (BGB).","f.mpw.err":"Nhập lực chiến di cư của bạn.",
     "f.ct":"Kênh liên hệ","f.ct.hint":"Chọn kênh bạn hay dùng nhất.","f.ct.other":"Khác",
     "f.cv":"Thông tin liên hệ","f.cv.ph":"Số Zalo, Discord tag hoặc link Facebook","f.cv.hint":"Ban quản trị sẽ nhắn cho bạn qua đây trong vòng 24 giờ.","f.cv.err":"Nhập thông tin liên hệ để chúng tôi phản hồi.",
     "f.note":"Ghi chú thêm","f.note.ph":"VD: đi cùng 3 người bạn, giờ online buổi tối, đã có vật phẩm chuyển server…","f.note.hint":"Không bắt buộc. Ghi càng rõ càng dễ sắp xếp.",
@@ -817,7 +828,7 @@ const I18N = {
     "ok.h":"Đã nhận đơn của bạn",
     "ok.p":"Hồ sơ đã được chuyển tới ban quản trị Server 134. Chúng tôi sẽ liên hệ qua kênh bạn để lại trong vòng 24 giờ.",
     "ok.keep":"Giữ lại mã đơn này để tiện tra cứu khi nhắn tin.",
-    "ok.copy":"Sao chép nội dung đơn","ok.copied":"Đã sao chép ✓","ok.join":"Vào nhóm liên hệ",
+    "ok.copy":"Sao chép nội dung đơn","ok.copied":"Đã sao chép ✓","ok.join":"Vào nhóm liên hệ","ok.another":"Gửi đơn khác",
 
     "faq.tag":"Hỏi đáp","faq.h2":"Thắc mắc thường gặp",
     "q1":"Chuyển server có mất tiến độ không?",
@@ -837,7 +848,7 @@ const I18N = {
     "foot.cta":"Đăng ký di cư →",
 
     "cp.title":"ĐƠN DI CƯ SERVER 134","cp.ticket":"Mã đơn","cp.id":"ID game","cp.name":"Tên nhân vật",
-    "cp.sv":"Server hiện tại","cp.lv":"Cấp nhà","cp.pw":"Lực chiến xe 1","cp.contact":"Liên hệ","cp.note":"Ghi chú","cp.none":"(không có)"
+    "cp.sv":"Server hiện tại","cp.lv":"Cấp nhà","cp.pw":"Lực chiến xe 1","cp.mpw":"Lực chiến di cư","cp.contact":"Liên hệ","cp.note":"Ghi chú","cp.none":"(không có)"
   },
 
   en: {
@@ -867,7 +878,7 @@ const I18N = {
 
     "pro.tag":"Process","pro.h2":"Four steps, that's it",
     "pro.p":"You only do step one. Someone guides you message by message through the other three.",
-    "s1.h":"Send the form","s1.p":"Game ID, character name, current server, shelter level and squad 1 power. About a minute.",
+    "s1.h":"Send the form","s1.p":"Game ID, character name, current server, shelter level, squad 1 power and migration power. About a minute.",
     "s2.h":"Application review","s2.p":"Leadership checks your power bracket and the remaining slots, then replies within 24 hours.",
     "s3.h":"Prepare the transfer","s3.p":"Guidance on the transfer item you need, when the gate opens, and the conditions you must meet.",
     "s4.h":"Settle in","s4.p":"On arrival someone brings you into the alliance, picks your coordinates, hands over the starter package, and you start building.",
@@ -882,6 +893,7 @@ const I18N = {
     "f.lv":"Shelter level","f.lv.hint":"The level of your main building (Shelter / Tower).","f.lv.err":"Select your shelter level.",
     "f.lv.ph":"— Select shelter level —","f.lv.n":"Level {n}",
     "f.pw":"Squad 1 power","f.pw.ph":"e.g. 12.500.000","f.pw.hint":"Total combat power of squad 1. Type digits, separators are added for you.","f.pw.err":"Enter your squad 1 power.",
+    "f.mpw":"Migration Power","f.mpw.ph":"e.g. 85.000.000","f.mpw.hint":"Check power in the Black Gold Battlefield (BGB) list.","f.mpw.err":"Enter your migration power.",
     "f.ct":"Contact channel","f.ct.hint":"Pick whichever you actually use.","f.ct.other":"Other",
     "f.cv":"Contact details","f.cv.ph":"Discord tag, phone number or profile link","f.cv.hint":"Leadership will message you here within 24 hours.","f.cv.err":"Leave contact details so we can reply.",
     "f.note":"Notes","f.note.ph":"e.g. coming with 3 friends, online in the evenings, transfer item ready…","f.note.hint":"Optional. The more detail, the easier to place you.",
@@ -894,7 +906,7 @@ const I18N = {
     "ok.h":"Application received",
     "ok.p":"Your file has reached Server 134 leadership. We will contact you through the channel you left within 24 hours.",
     "ok.keep":"Keep this reference code handy when you message us.",
-    "ok.copy":"Copy application","ok.copied":"Copied ✓","ok.join":"Join the contact group",
+    "ok.copy":"Copy application","ok.copied":"Copied ✓","ok.join":"Join the contact group","ok.another":"Submit another",
 
     "faq.tag":"FAQ","faq.h2":"Common questions",
     "q1":"Do I lose progress when transferring?",
@@ -914,7 +926,7 @@ const I18N = {
     "foot.cta":"Apply to migrate →",
 
     "cp.title":"SERVER 134 MIGRATION APPLICATION","cp.ticket":"Reference","cp.id":"Game ID","cp.name":"Character name",
-    "cp.sv":"Current server","cp.lv":"Shelter level","cp.pw":"Squad 1 power","cp.contact":"Contact","cp.note":"Notes","cp.none":"(none)"
+    "cp.sv":"Current server","cp.lv":"Shelter level","cp.pw":"Squad 1 power","cp.mpw":"Migration power","cp.contact":"Contact","cp.note":"Notes","cp.none":"(none)"
   },
 
   zh: {
@@ -944,7 +956,7 @@ const I18N = {
 
     "pro.tag":"加入流程","pro.h2":"四步就搞定",
     "pro.p":"你只需要做第一步。剩下三步全程有人按步骤带你走。",
-    "s1.h":"提交申请","s1.p":"填写游戏 ID、角色名、当前服务器、主基地等级和一队战力，大约一分钟。",
+    "s1.h":"提交申请","s1.p":"填写游戏 ID、角色名、当前服务器、主基地等级、一队战力和迁服战力，大约一分钟。",
     "s2.h":"审核资料","s2.p":"管理组核对战力段位和剩余名额，24 小时内给回复。",
     "s3.h":"准备转服","s3.p":"指导你备好转服道具、盯准通道开放时间，以及需要达到的条件。",
     "s4.h":"落地建家","s4.p":"到服后有人带你进联盟、挑坐标、领启动补给，然后开始发育。",
@@ -959,6 +971,7 @@ const I18N = {
     "f.lv":"主基地等级","f.lv.hint":"主建筑（避难所 / 主基地）的等级。","f.lv.err":"请选择主基地等级。",
     "f.lv.ph":"— 选择主基地等级 —","f.lv.n":"{n} 级",
     "f.pw":"一队战力","f.pw.ph":"例：12.500.000","f.pw.hint":"一号车队的总战力。直接打数字，分隔点自动加。","f.pw.err":"请填写一队战力。",
+    "f.mpw":"迁服战力","f.mpw.ph":"例：85.000.000","f.mpw.hint":"在黑金战场 (BGB) 列表中查看战力。","f.mpw.err":"请填写迁服战力。",
     "f.ct":"联系方式类型","f.ct.hint":"选你最常用的那个。","f.ct.other":"其他",
     "f.cv":"联系方式","f.cv.ph":"微信号、QQ、Discord 标签或其他联系方式","f.cv.hint":"管理组会在 24 小时内通过这里联系你。","f.cv.err":"请留下联系方式，方便我们回复。",
     "f.note":"备注","f.note.ph":"例：和 3 个朋友一起来、晚上在线、已备好转服道具…","f.note.hint":"选填。写得越清楚越好安排。",
@@ -971,7 +984,7 @@ const I18N = {
     "ok.h":"申请已收到",
     "ok.p":"资料已送到 134 服管理组。我们会在 24 小时内通过你留的联系方式找你。",
     "ok.keep":"请保存这个申请编号，联系时报给我们。",
-    "ok.copy":"复制申请内容","ok.copied":"已复制 ✓","ok.join":"进入联系群",
+    "ok.copy":"复制申请内容","ok.copied":"已复制 ✓","ok.join":"进入联系群","ok.another":"再填一份",
 
     "faq.tag":"常见问题","faq.h2":"大家都在问",
     "q1":"转服会掉进度吗？",
@@ -991,7 +1004,7 @@ const I18N = {
     "foot.cta":"报名迁服 →",
 
     "cp.title":"134服 迁服申请","cp.ticket":"申请编号","cp.id":"游戏 ID","cp.name":"角色名",
-    "cp.sv":"当前服务器","cp.lv":"主基地等级","cp.pw":"一队战力","cp.contact":"联系方式","cp.note":"备注","cp.none":"（无）"
+    "cp.sv":"当前服务器","cp.lv":"主基地等级","cp.pw":"一队战力","cp.mpw":"迁服战力","cp.contact":"联系方式","cp.note":"备注","cp.none":"（无）"
   }
 };
 
@@ -1132,11 +1145,28 @@ document.querySelectorAll('.stat b').forEach(el => statIO.observe(el));
   el.addEventListener('input', () => { el.value = el.value.replace(/\D/g,''); });
 });
 
-// Lực chiến: tự chèn dấu chấm ngăn cách hàng nghìn
-const powerEl = document.getElementById('power');
-powerEl.addEventListener('input', () => {
-  const digits = powerEl.value.replace(/\D/g,'').slice(0,12);
-  powerEl.value = digits ? Number(digits).toLocaleString('vi-VN') : '';
+// Lực chiến xe 1 & Lực chiến di cư: tự chèn dấu chấm ngăn cách hàng nghìn và giữ vị trí con trỏ
+['power', 'migrationPower'].forEach(id => {
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.addEventListener('input', () => {
+    const oldVal = el.value;
+    const oldSel = el.selectionEnd || 0;
+    const digitsBefore = oldVal.slice(0, oldSel).replace(/\D/g, '').length;
+
+    const digits = oldVal.replace(/\D/g, '').slice(0, 12);
+    const formatted = digits ? Number(digits).toLocaleString('vi-VN') : '';
+    el.value = formatted;
+
+    let newSel = formatted.length;
+    let count = 0;
+    for(let i = 0; i < formatted.length; i++){
+      if(/\d/.test(formatted[i])) count++;
+      if(count === digitsBefore){ newSel = i + 1; break; }
+    }
+    if(digitsBefore === 0) newSel = 0;
+    el.setSelectionRange(newSel, newSel);
+  });
 });
 
 // Xoá trạng thái lỗi khi người dùng bắt đầu sửa
@@ -1159,7 +1189,7 @@ function showError(msg){
 
 function validate(){
   let firstBad = null;
-  const required = ['gameId','gameName','server','towerLevel','power','contact'];
+  const required = ['gameId','gameName','server','towerLevel','power','migrationPower','contact'];
   required.forEach(id => {
     const el = document.getElementById(id);
     const bad = !el.value.trim();
@@ -1172,7 +1202,10 @@ function validate(){
     showError(t('f.err.required'));
     return false;
   }
-  if(!document.getElementById('agree').checked){
+  const agreeEl = document.getElementById('agree');
+  if(!agreeEl.checked){
+    agreeEl.scrollIntoView({behavior:'smooth', block:'center'});
+    agreeEl.focus();
     showError(t('f.err.agree'));
     return false;
   }
@@ -1182,8 +1215,8 @@ function validate(){
 function makeTicket(){
   const d = new Date();
   const p = n => String(n).padStart(2,'0');
-  return 'S134-' + p(d.getMonth()+1) + p(d.getDate()) + '-' +
-         Math.random().toString(36).slice(2,6).toUpperCase();
+  const rand = Math.random().toString(36).slice(2,6).toUpperCase().padEnd(4, '0');
+  return 'S134-' + p(d.getMonth()+1) + p(d.getDate()) + '-' + rand;
 }
 
 function asText(p){
@@ -1195,6 +1228,7 @@ function asText(p){
     t('cp.sv')      + ': ' + p.server,
     t('cp.lv')      + ': ' + p.towerLevel,
     t('cp.pw')      + ': ' + p.power,
+    t('cp.mpw')     + ': ' + p.migrationPower,
     t('cp.contact') + ': ' + p.contactType + ' — ' + p.contact,
     t('cp.note')    + ': ' + (p.note || t('cp.none'))
   ].join('\n');
@@ -1215,14 +1249,15 @@ form.addEventListener('submit', async (ev) => {
   if(!validate()) return;
 
   const payload = {
-    ticket:      makeTicket(),
-    gameId:      document.getElementById('gameId').value.trim(),
-    gameName:    document.getElementById('gameName').value.trim(),
-    server:      document.getElementById('server').value.trim(),
-    towerLevel:  document.getElementById('towerLevel').value,
-    power:       document.getElementById('power').value.trim(),
-    contactType: document.getElementById('contactType').value,
-    contact:     document.getElementById('contact').value.trim(),
+    ticket:         makeTicket(),
+    gameId:         document.getElementById('gameId').value.trim(),
+    gameName:       document.getElementById('gameName').value.trim(),
+    server:         document.getElementById('server').value.trim(),
+    towerLevel:     document.getElementById('towerLevel').value,
+    power:          document.getElementById('power').value.trim(),
+    migrationPower: document.getElementById('migrationPower').value.trim(),
+    contactType:    document.getElementById('contactType').value,
+    contact:        document.getElementById('contact').value.trim(),
     note:        document.getElementById('note').value.trim(),
     lang:        LANG,
     submittedAt: new Date().toISOString(),
@@ -1277,6 +1312,19 @@ document.getElementById('copyBtn').addEventListener('click', async (e) => {
   setTimeout(() => { e.target.textContent = t('ok.copy'); }, 2200);
 });
 
+// Nút gửi thêm đơn khác (không cần tải lại trang)
+document.getElementById('anotherBtn')?.addEventListener('click', () => {
+  form.reset();
+  fillLevels();
+  form.querySelectorAll('.field').forEach(f => f.classList.remove('invalid'));
+  statusBox.className = 'form-status';
+  submitBtn.disabled = false;
+  btnText.textContent = t('f.submit');
+  doneScreen.classList.remove('show');
+  form.style.display = 'block';
+  form.scrollIntoView({behavior:'smooth', block:'start'});
+});
+
 /* ============================================================
    5. TIỆN ÍCH CHO BAN QUẢN TRỊ
    Mở trang với ?admin=1 để tải về các đơn đang lưu tạm trên máy này
@@ -1286,7 +1334,7 @@ if(new URLSearchParams(location.search).get('admin') === '1') try {
   const rows = JSON.parse(localStorage.getItem('s134_regs') || '[]');
   console.log('[S134] Đơn lưu tạm trên máy này:', rows);
   if(rows.length){
-    const head = ['ticket','submittedAt','gameId','gameName','server','towerLevel','power','contactType','contact','note','lang'];
+    const head = ['ticket','submittedAt','gameId','gameName','server','towerLevel','power','migrationPower','contactType','contact','note','lang'];
     const esc = v => '"' + String(v ?? '').replace(/"/g,'""') + '"';
     const csv = '﻿' + [head.join(',')].concat(rows.map(r => head.map(k => esc(r[k])).join(','))).join('\n');
     const url = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
